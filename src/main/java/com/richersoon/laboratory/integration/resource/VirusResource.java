@@ -7,13 +7,14 @@ import com.richersoon.laboratory.api.service.VirusService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -23,7 +24,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(VirusResource.ENDPOINT)
-@Api(tags="viruses")
+@Api(tags = "viruses")
 public class VirusResource {
 
     public static final String ENDPOINT = "/viruses";
@@ -33,22 +34,25 @@ public class VirusResource {
 
     /**
      * Create unique virus
+     *
      * @param createRequestDto the create request
      * @return created virus
      */
     @PostMapping
-    public ResponseEntity<VirusDto> create(@Valid @RequestBody CreateVirusRequestDto createRequestDto) {
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public VirusDto create(@Valid @RequestBody CreateVirusRequestDto createRequestDto) {
         VirusRequestDto requestDto = VirusRequestDto.builder()
                 .name(createRequestDto.getName())
                 .description(createRequestDto.getDescription())
                 .build();
-        return new ResponseEntity<>(virusService.create(requestDto), HttpStatus.CREATED);
+        return virusService.create(requestDto);
     }
 
     /**
      * Update virus
+     *
      * @param updateVirusRequestDto the update request
-     * @param name the name
+     * @param name                  the name
      * @return updated virus
      */
     @PutMapping("/{name}")
@@ -62,7 +66,19 @@ public class VirusResource {
     }
 
     /**
+     * Delete virus
+     *
+     * @param name the name
+     */
+    @DeleteMapping("/{name}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable String name) {
+        virusService.delete(name);
+    }
+
+    /**
      * Get virus
+     *
      * @return the virus
      */
     @GetMapping("/{name}")
@@ -72,6 +88,7 @@ public class VirusResource {
 
     /**
      * Get viruses
+     *
      * @return the viruses
      */
     @GetMapping

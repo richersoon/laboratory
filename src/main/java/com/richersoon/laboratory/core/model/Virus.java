@@ -4,6 +4,7 @@ import com.richersoon.laboratory.api.dto.VirusRequestDto;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -28,7 +29,7 @@ public class Virus {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "virus")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "virus", cascade = CascadeType.REMOVE)
     private List<Symptom> symptoms = new ArrayList<>();
 
     /**
