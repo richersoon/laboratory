@@ -16,4 +16,12 @@ public interface VirusService {
      * @return the virus
      */
     VirusDto create(VirusRequestDto requestDto);
+
+    /**
+     * Update a virus
+     * @param requestDto
+     * @throws AlreadyExistException if virus exist by name
+     * @return updated virus
+     */
+    VirusDto update(VirusRequestDto requestDto);
 }

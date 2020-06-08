@@ -12,7 +12,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class VirusDto {
-    private String id;
     private String name;
     private String description;
     private LocalDateTime createdAt;

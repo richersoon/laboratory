@@ -3,6 +3,7 @@ package com.richersoon.laboratory.core.service;
 import com.richersoon.laboratory.api.dto.VirusDto;
 import com.richersoon.laboratory.api.dto.VirusRequestDto;
 import com.richersoon.laboratory.api.exception.AlreadyExistException;
+import com.richersoon.laboratory.api.exception.NotFoundException;
 import com.richersoon.laboratory.api.service.VirusService;
 import com.richersoon.laboratory.core.model.Virus;
 import com.richersoon.laboratory.core.repository.VirusRepository;
@@ -10,12 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,13 +33,12 @@ public class DefaultVirusServiceTest {
         VirusRequestDto setUpRequest = commonTestRequestVirus();
         Virus expected = Virus.create(setUpRequest);
         when(virusRepository.findByName(setUpRequest.getName())).thenReturn(Optional.empty());
-        when(virusRepository.save(any())).thenReturn(expected);
+        when(virusRepository.save(expected)).thenReturn(expected);
 
         VirusDto actual = underTest.create(setUpRequest);
         verify(virusRepository, times(1)).findByName(setUpRequest.getName());
-        verify(virusRepository, times(1)).save(any());
+        verify(virusRepository, times(1)).save(expected);
 
-        assertNotNull(actual.getId());
         assertEquals(expected.getName(), actual.getName());
         assertEquals(expected.getDescription(), actual.getDescription());
         assertNotNull(actual.getCreatedAt());
@@ -59,7 +57,44 @@ public class DefaultVirusServiceTest {
         });
 
         assertNotNull(actual);
-        assertEquals(AlreadyExistException.ALREADY_EXISTS_ENTITY, actual.getMessage());
+        assertEquals(AlreadyExistException.MESSAGE, actual.getMessage());
+    }
+
+    @Test
+    public void updateSuccessfully() {
+        VirusRequestDto setUpRequest = commonTestRequestVirus();
+        Virus setUpVirus = Virus.create(setUpRequest);
+
+        VirusRequestDto expectedRequest = VirusRequestDto.builder()
+                .name("COVID20")
+                .description("The COVID-20 pandemic, also known as the coronavirus pandemic, is an ongoing pandemic " +
+                        "of coronavirus disease 2019 (COVID‑20)")
+                .build();
+        Virus expected = setUpVirus.update(expectedRequest);
+
+        when(virusRepository.findByName(setUpRequest.getName())).thenReturn(Optional.of(setUpVirus));
+        when(virusRepository.save(expected)).thenReturn(expected);
+
+        VirusDto actual = underTest.update(setUpRequest);
+        verify(virusRepository, times(1)).findByName(setUpRequest.getName());
+        verify(virusRepository, times(1)).save(expected);
+
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
+        assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt());
+    }
+
+    @Test
+    public void updateShouldThrowNotFoundExceptionWhenNameNotFound() {
+        VirusRequestDto setUpRequest = commonTestRequestVirus();
+        when(virusRepository.findByName(setUpRequest.getName())).thenReturn(Optional.empty());
+
+        NotFoundException actual = assertThrows(NotFoundException.class, () -> {
+            underTest.update(setUpRequest);
+        });
+        assertNotNull(actual);
+        assertEquals(NotFoundException.MESSAGE, actual.getMessage());
     }
 
     private VirusRequestDto commonTestRequestVirus() {
