@@ -44,6 +44,14 @@ public class DefaultVirusService implements VirusService {
     }
 
     @Override
+    public void delete(String name) {
+        Virus virus = virusRepository.findByName(name)
+                .orElseThrow(NotFoundException::new);
+
+        virusRepository.deleteById(virus.getName());
+    }
+
+    @Override
     public VirusDto get(String name) {
         return virusRepository.findByName(name)
                 .map(virus -> mapperFacade.map(virus, VirusDto.class))

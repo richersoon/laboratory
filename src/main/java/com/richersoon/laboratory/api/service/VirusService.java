@@ -27,6 +27,12 @@ public interface VirusService {
     VirusDto update(VirusRequestDto requestDto);
 
     /**
+     * Delete a virus
+     * @param name the virus name
+     */
+    void delete(String name);
+
+    /**
      * Get a virus
      * @param name the name
      * @return the virus

@@ -9,6 +9,7 @@ import com.richersoon.laboratory.api.service.VirusService;
 import com.richersoon.laboratory.core.model.Virus;
 import com.richersoon.laboratory.core.repository.VirusRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,7 +18,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -96,6 +101,33 @@ public class DefaultVirusServiceTest {
         NotFoundException actual = assertThrows(NotFoundException.class, () -> {
             underTest.update(setUpRequest);
         });
+        assertNotNull(actual);
+        assertEquals(NotFoundException.MESSAGE, actual.getMessage());
+    }
+
+    @Test
+    public void deleteSuccessfully() {
+        Virus mock = Mockito.mock(Virus.class);
+        String any = any();
+        when(virusRepository.findByName(any)).thenReturn(Optional.of(mock));
+        doNothing().when(virusRepository).deleteById(any);
+
+        underTest.delete(any);
+        verify(virusRepository, times(1)).findByName(any);
+        verify(virusRepository, times(1)).deleteById(any);
+    }
+
+    @Test
+    public void deleteShouldThrowNotFoundExceptionWhenNameNotFound() {
+        String any = any();
+
+        when(virusRepository.findByName(any)).thenReturn(Optional.empty());
+
+        NotFoundException actual = assertThrows(NotFoundException.class, () -> {
+            underTest.delete(any);
+        });
+        verify(virusRepository, times(1)).findByName(any);
+        verify(virusRepository, times(0)).deleteById(any);
         assertNotNull(actual);
         assertEquals(NotFoundException.MESSAGE, actual.getMessage());
     }
