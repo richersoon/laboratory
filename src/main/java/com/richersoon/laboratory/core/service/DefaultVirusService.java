@@ -1,5 +1,6 @@
 package com.richersoon.laboratory.core.service;
 
+import com.richersoon.laboratory.api.dto.PaginatedDto;
 import com.richersoon.laboratory.api.dto.VirusDto;
 import com.richersoon.laboratory.api.dto.VirusRequestDto;
 import com.richersoon.laboratory.api.exception.AlreadyExistException;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,6 +48,13 @@ public class DefaultVirusService implements VirusService {
         return virusRepository.findByName(name)
                 .map(virus -> mapperFacade.map(virus, VirusDto.class))
                 .orElseThrow(NotFoundException::new);
+    }
+
+    @Override
+    public PaginatedDto<VirusDto> getAll() {
+        List<VirusDto> viruses = mapperFacade.mapAsList(virusRepository.findAll(), VirusDto.class);
+        PaginatedDto<VirusDto> paginatedDto = new PaginatedDto<>(viruses);
+        return paginatedDto;
     }
 
 }

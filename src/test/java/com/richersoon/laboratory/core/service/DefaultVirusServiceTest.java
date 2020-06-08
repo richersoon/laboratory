@@ -1,5 +1,6 @@
 package com.richersoon.laboratory.core.service;
 
+import com.richersoon.laboratory.api.dto.PaginatedDto;
 import com.richersoon.laboratory.api.dto.VirusDto;
 import com.richersoon.laboratory.api.dto.VirusRequestDto;
 import com.richersoon.laboratory.api.exception.AlreadyExistException;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -123,6 +126,26 @@ public class DefaultVirusServiceTest {
         });
         assertNotNull(actual);
         assertEquals(NotFoundException.MESSAGE, actual.getMessage());
+    }
+
+    @Test
+    public void getAllSuccessfully() {
+        VirusRequestDto setUpRequest = commonTestRequestVirus();
+        Virus expected = Virus.create(setUpRequest);
+        List<Virus> expecteds = Arrays.asList(expected);
+
+        when(virusRepository.findAll()).thenReturn(expecteds);
+
+        PaginatedDto<VirusDto> actuals = underTest.getAll();
+        verify(virusRepository, times(1)).findAll();
+
+        assertEquals(1, actuals.getItems().size());
+
+        VirusDto actual = actuals.getItems().iterator().next();
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
+        assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt());
     }
 
     private VirusRequestDto commonTestRequestVirus() {
