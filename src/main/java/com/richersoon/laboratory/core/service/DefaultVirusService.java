@@ -13,7 +13,6 @@ import ma.glasnost.orika.MapperFacade;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Default implementation of {@link VirusService}
@@ -27,7 +26,7 @@ public class DefaultVirusService implements VirusService {
 
     @Override
     public VirusDto create(final VirusRequestDto requestDto) {
-        if(virusRepository.findByName(requestDto.getName()).isPresent()) {
+        if (virusRepository.findByName(requestDto.getName()).isPresent()) {
             throw new AlreadyExistException();
         }
 
@@ -37,10 +36,11 @@ public class DefaultVirusService implements VirusService {
 
     @Override
     public VirusDto update(final VirusRequestDto requestDto) {
-        Virus updatedVirus = virusRepository.findByName(requestDto.getName())
+        return virusRepository.findByName(requestDto.getName())
                 .map(virus -> virus.update(requestDto))
+                .map(virusRepository::save)
+                .map(virus -> mapperFacade.map(virus, VirusDto.class))
                 .orElseThrow(NotFoundException::new);
-        return mapperFacade.map(virusRepository.save(updatedVirus), VirusDto.class);
     }
 
     @Override
