@@ -183,10 +183,10 @@ public class DefaultSymptomServiceTest {
 
         List<Symptom> expecteds = Arrays.asList(expected);
 
-        when(symptomRepository.findByVirusName(virus.getName())).thenReturn(expecteds);
+        when(symptomRepository.findByVirus_Name(virus.getName())).thenReturn(expecteds);
 
         PaginatedDto<SymptomDto> actuals = underTest.getAll(virus.getName());
-        verify(symptomRepository, times(1)).findByVirusName(virus.getName());
+        verify(symptomRepository, times(1)).findByVirus_Name(virus.getName());
 
         assertEquals(1, actuals.getItems().size());
 

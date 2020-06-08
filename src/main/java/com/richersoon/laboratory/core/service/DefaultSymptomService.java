@@ -58,7 +58,7 @@ public class DefaultSymptomService implements SymptomService {
 
     @Override
     public PaginatedDto<SymptomDto> getAll(String virusName) {
-        List<SymptomDto> symptoms = mapperFacade.mapAsList(symptomRepository.findByVirusName(virusName), SymptomDto.class);
+        List<SymptomDto> symptoms = mapperFacade.mapAsList(symptomRepository.findByVirus_Name(virusName), SymptomDto.class);
         PaginatedDto<SymptomDto> paginatedDto = new PaginatedDto<>(symptoms);
         return paginatedDto;
     }

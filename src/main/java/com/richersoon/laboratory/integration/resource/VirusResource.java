@@ -4,6 +4,7 @@ import com.richersoon.laboratory.api.dto.PaginatedDto;
 import com.richersoon.laboratory.api.dto.VirusDto;
 import com.richersoon.laboratory.api.dto.VirusRequestDto;
 import com.richersoon.laboratory.api.service.VirusService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,11 @@ import javax.validation.Valid;
  * Endpoint that expose viruses functionalities
  */
 @RestController
-@RequestMapping("/viruses")
+@RequestMapping(VirusResource.ENDPOINT)
+@Api(tags="viruses")
 public class VirusResource {
+
+    public static final String ENDPOINT = "/viruses";
 
     @Autowired
     private VirusService virusService;

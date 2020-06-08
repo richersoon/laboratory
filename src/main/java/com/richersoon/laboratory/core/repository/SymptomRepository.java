@@ -23,5 +23,5 @@ public interface SymptomRepository extends JpaRepository<Symptom, String> {
      * @param virusName the virus name
      * @return the symptoms
      */
-    List<Symptom> findByVirusName(String virusName);
+    List<Symptom> findByVirus_Name(String virusName);
 }
