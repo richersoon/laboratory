@@ -5,6 +5,7 @@ import com.richersoon.laboratory.api.dto.SymptomRequestDto;
 import com.richersoon.laboratory.api.service.SymptomService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,5 +38,16 @@ public class SymptomResource {
                 .description(updateSymptomRequestDto.getDescription())
                 .build();
         return symptomService.update(requestDto);
+    }
+
+    /**
+     * Get symptom
+     *
+     * @param id                      the symptom id
+     * @return a symptom
+     */
+    @GetMapping("/{id}")
+    public SymptomDto get(@PathVariable String id) {
+        return symptomService.get(id);
     }
 }
