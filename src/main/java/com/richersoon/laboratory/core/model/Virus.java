@@ -6,6 +6,9 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Domain object for virus
+ */
 @Getter
 public class Virus {
     private String id;
@@ -14,6 +17,11 @@ public class Virus {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    /**
+     * Instantiates
+     * @param requestDto the create request
+     * @return the new virus
+     */
     public static Virus create(VirusRequestDto requestDto) {
         Virus virus = new Virus();
         virus.id = UUID.randomUUID().toString();
@@ -24,6 +32,11 @@ public class Virus {
         return virus;
     }
 
+    /**
+     * Update
+     * @param requestDto the create request
+     * @return the updated virus
+     */
     public void update(VirusRequestDto requestDto) {
         this.name = requestDto.getName();
         this.description = requestDto.getDescription();
