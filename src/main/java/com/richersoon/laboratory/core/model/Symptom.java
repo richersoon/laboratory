@@ -14,7 +14,7 @@ import java.util.UUID;
  * Domain object for symptom
  */
 @Getter
-@EqualsAndHashCode(of = {"id"})
+@EqualsAndHashCode(of = {"description"})
 @Entity(name = Symptom.TABLE_NAME)
 public class Symptom {
 
@@ -55,6 +55,14 @@ public class Symptom {
         this.description = requestDto.getDescription();
         this.updatedAt = LocalDateTime.now();
         return this;
+    }
+
+    /**
+     * Get virus name
+     * @return the virus name
+     */
+    public String getVirusName() {
+        return this.virus.getName();
     }
 
 }

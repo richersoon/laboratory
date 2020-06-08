@@ -1,7 +1,7 @@
 package com.richersoon.laboratory.api.service;
 
+import com.richersoon.laboratory.api.dto.SymptomDto;
 import com.richersoon.laboratory.api.dto.SymptomRequestDto;
-import com.richersoon.laboratory.api.dto.VirusDto;
 import com.richersoon.laboratory.api.exception.AlreadyExistException;
 
 /**
@@ -13,7 +13,7 @@ public interface SymptomService {
      * Create new symptom
      * @param requestDto
      * @throws AlreadyExistException if symptom exist by description
-     * @return the virus
+     * @return the symptom
      */
-    VirusDto create(SymptomRequestDto requestDto);
+    SymptomDto create(SymptomRequestDto requestDto);
 }

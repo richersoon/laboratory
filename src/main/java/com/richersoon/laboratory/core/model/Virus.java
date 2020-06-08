@@ -28,7 +28,7 @@ public class Virus {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "symptom")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "virus")
     private List<Symptom> symptoms = new ArrayList<>();
 
     /**
