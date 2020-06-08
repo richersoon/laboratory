@@ -41,4 +41,11 @@ public class DefaultVirusService implements VirusService {
         return mapperFacade.map(virusRepository.save(updatedVirus), VirusDto.class);
     }
 
+    @Override
+    public VirusDto get(String name) {
+        return virusRepository.findByName(name)
+                .map(virus -> mapperFacade.map(virus, VirusDto.class))
+                .orElseThrow(NotFoundException::new);
+    }
+
 }

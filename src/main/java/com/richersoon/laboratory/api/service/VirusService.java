@@ -24,4 +24,11 @@ public interface VirusService {
      * @return updated virus
      */
     VirusDto update(VirusRequestDto requestDto);
+
+    /**
+     * Get a virus
+     * @param name the name
+     * @return the virus
+     */
+    VirusDto get(String name);
 }

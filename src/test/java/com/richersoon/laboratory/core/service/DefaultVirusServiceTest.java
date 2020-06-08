@@ -97,6 +97,34 @@ public class DefaultVirusServiceTest {
         assertEquals(NotFoundException.MESSAGE, actual.getMessage());
     }
 
+    @Test
+    public void getSuccessfully() {
+        VirusRequestDto setUpRequest = commonTestRequestVirus();
+        Virus expected = Virus.create(setUpRequest);
+
+        when(virusRepository.findByName(setUpRequest.getName())).thenReturn(Optional.of(expected));
+
+        VirusDto actual = underTest.get(expected.getName());
+        verify(virusRepository, times(1)).findByName(setUpRequest.getName());
+
+        assertEquals(expected.getName(), actual.getName());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
+        assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt());
+    }
+
+    @Test
+    public void getShouldThrowNotFoundExceptionWhenNameNotFound() {
+        VirusRequestDto setUpRequest = commonTestRequestVirus();
+        when(virusRepository.findByName(setUpRequest.getName())).thenReturn(Optional.empty());
+
+        NotFoundException actual = assertThrows(NotFoundException.class, () -> {
+            underTest.get(setUpRequest.getName());
+        });
+        assertNotNull(actual);
+        assertEquals(NotFoundException.MESSAGE, actual.getMessage());
+    }
+
     private VirusRequestDto commonTestRequestVirus() {
         return VirusRequestDto.builder().name("COVID19")
                 .description("The COVID-19 pandemic, also known as the coronavirus pandemic, is an ongoing pandemic " +
