@@ -8,14 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Endpoint that expose viruses functionalities
  */
-@RestController("viruses")
+@RestController
+@RequestMapping("/viruses")
 public class VirusResource {
 
     @Autowired
@@ -33,6 +37,16 @@ public class VirusResource {
                 .description(createRequestDto.getDescription())
                 .build();
         return new ResponseEntity<>(virusService.create(requestDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{name}")
+    public VirusDto update(@RequestBody UpdateVirusRequestDto updateVirusRequestDto,
+                           @PathVariable String name) {
+        VirusRequestDto requestDto = VirusRequestDto.builder()
+                .name(name)
+                .description(updateVirusRequestDto.getDescription())
+                .build();
+        return virusService.update(requestDto);
     }
 
     /**
