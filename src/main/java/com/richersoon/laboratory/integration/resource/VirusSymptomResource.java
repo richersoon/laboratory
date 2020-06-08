@@ -1,5 +1,6 @@
 package com.richersoon.laboratory.integration.resource;
 
+import com.richersoon.laboratory.api.dto.PaginatedDto;
 import com.richersoon.laboratory.api.dto.SymptomDto;
 import com.richersoon.laboratory.api.dto.SymptomRequestDto;
 import com.richersoon.laboratory.api.service.SymptomService;
@@ -7,6 +8,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +33,7 @@ public class VirusSymptomResource {
     /**
      * Create unique virus
      * @param createRequestDto the create request
-     * @return created virus
+     * @return created symptom
      */
     @PostMapping
     public ResponseEntity<SymptomDto> create(@Valid @RequestBody CreateSymptomRequestDto createRequestDto,
@@ -41,5 +43,15 @@ public class VirusSymptomResource {
                 .description(createRequestDto.getDescription())
                 .build();
         return new ResponseEntity<>(symptomService.create(requestDto), HttpStatus.CREATED);
+    }
+
+    /**
+     * Get symptoms by virus name
+     * @param name the virus name
+     * @return the symptoms
+     */
+    @GetMapping
+    public PaginatedDto<SymptomDto> getAll(@PathVariable String name) {
+        return symptomService.getAll(name);
     }
 }

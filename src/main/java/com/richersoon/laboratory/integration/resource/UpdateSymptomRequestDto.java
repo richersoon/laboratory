@@ -5,10 +5,10 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 /**
- * Update virus request
+ * Update symptom request
  */
 @Data
-public class UpdateVirusRequestDto {
+public class UpdateSymptomRequestDto {
 
     @NotBlank
     private String description;
