@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,6 +24,9 @@ public class Symptom {
     private String id;
     private String description;
 
+    @ManyToOne
+    private Virus virus;
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -31,13 +35,15 @@ public class Symptom {
      * @param requestDto the create request
      * @return the new symptom
      */
-    public static Symptom create(final SymptomRequestDto requestDto) {
-        Symptom virus = new Symptom();
-        virus.id = UUID.randomUUID().toString();
-        virus.description = requestDto.getDescription();
-        virus.createdAt = LocalDateTime.now();
-        virus.updatedAt = LocalDateTime.now();
-        return virus;
+    public static Symptom create(final Virus virus,
+                                 final SymptomRequestDto requestDto) {
+        Symptom symptom = new Symptom();
+        symptom.virus = virus;
+        symptom.id = UUID.randomUUID().toString();
+        symptom.description = requestDto.getDescription();
+        symptom.createdAt = LocalDateTime.now();
+        symptom.updatedAt = LocalDateTime.now();
+        return symptom;
     }
 
     /**

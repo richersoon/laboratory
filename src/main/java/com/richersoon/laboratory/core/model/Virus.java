@@ -5,9 +5,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Domain object for virus
@@ -24,6 +27,9 @@ public class Virus {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "symptom")
+    private List<Symptom> symptoms = new ArrayList<>();
 
     /**
      * Instantiates
