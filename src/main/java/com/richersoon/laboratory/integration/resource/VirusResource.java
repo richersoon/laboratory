@@ -50,6 +50,15 @@ public class VirusResource {
     }
 
     /**
+     * Get virus
+     * @return the virus
+     */
+    @GetMapping("/{name}")
+    public VirusDto get(@PathVariable String name) {
+        return virusService.get(name);
+    }
+
+    /**
      * Get viruses
      * @return the viruses
      */
