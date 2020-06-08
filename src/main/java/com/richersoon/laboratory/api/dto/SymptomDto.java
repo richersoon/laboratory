@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class SymptomDto {
+    private String id;
     private String description;
     private String virusName;
 

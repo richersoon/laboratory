@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class SymptomRequestDto {
+    private String id;
     private String virusName;
     private String description;
 }

@@ -97,6 +97,47 @@ public class DefaultSymptomServiceTest {
         assertEquals(NotFoundException.MESSAGE, actual.getMessage());
     }
 
+    @Test
+    public void updateSuccessfully() {
+        Virus virus = commonTestVirus();
+        SymptomRequestDto setUpRequest = commonTestRequestSymptom();
+        Symptom setUpSymptom = Symptom.create(virus, setUpRequest);
+
+        SymptomRequestDto expectedRequest = SymptomRequestDto.builder()
+                .description("Mild Headache")
+                .build();
+        Symptom expected = setUpSymptom.update(expectedRequest);
+
+        when(symptomRepository.findById(setUpRequest.getId())).thenReturn(Optional.of(setUpSymptom));
+        when(symptomRepository.save(expected)).thenReturn(expected);
+
+        SymptomDto actual = underTest.update(setUpRequest);
+        verify(symptomRepository, times(1)).findById(setUpRequest.getId());
+        verify(symptomRepository, times(1)).save(expected);
+
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
+        assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt());
+    }
+
+    @Test
+    public void updateShouldThrowNotFoundWhenIdNotFound() {
+        SymptomRequestDto setUpRequest = commonTestRequestSymptom();
+
+        when(symptomRepository.findById(setUpRequest.getId())).thenReturn(Optional.empty());
+
+        NotFoundException actual = assertThrows(NotFoundException.class, () -> {
+            underTest.update(setUpRequest);
+        });
+
+        verify(symptomRepository, times(1)).findById(setUpRequest.getId());
+        verify(symptomRepository, times(0)).save(any());
+
+        assertNotNull(actual);
+        assertEquals(NotFoundException.MESSAGE, actual.getMessage());
+    }
+
     private SymptomRequestDto commonTestRequestSymptom() {
         Virus virus = commonTestVirus();
         return SymptomRequestDto.builder()
@@ -107,8 +148,7 @@ public class DefaultSymptomServiceTest {
 
     private Virus commonTestVirus() {
         VirusRequestDto requestDto =  VirusRequestDto.builder().name("COVID19")
-                .description("The COVID-19 pandemic, also known as the coronavirus pandemic, is an ongoing pandemic " +
-                        "of coronavirus disease 2019 (COVID‑19)")
+                .description("Headache")
                 .build();
 
         Virus setUpVirus = Virus.create(requestDto);

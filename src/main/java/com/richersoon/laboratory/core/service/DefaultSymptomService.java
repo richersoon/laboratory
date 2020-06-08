@@ -26,7 +26,7 @@ public class DefaultSymptomService implements SymptomService {
 
     @Override
     public SymptomDto create(final SymptomRequestDto requestDto) {
-        if(symptomRepository.findByDescription(requestDto.getDescription()).isPresent()) {
+        if (symptomRepository.findByDescription(requestDto.getDescription()).isPresent()) {
             throw new AlreadyExistException();
         }
 
@@ -35,5 +35,14 @@ public class DefaultSymptomService implements SymptomService {
 
         Symptom symptom = Symptom.create(virus, requestDto);
         return mapperFacade.map(symptomRepository.save(symptom), SymptomDto.class);
+    }
+
+    @Override
+    public SymptomDto update(SymptomRequestDto requestDto) {
+        return symptomRepository.findById(requestDto.getId())
+                .map(symptom -> symptom.update(requestDto))
+                .map(symptomRepository::save)
+                .map(symptom -> mapperFacade.map(symptom, SymptomDto.class))
+                .orElseThrow(NotFoundException::new);
     }
 }
