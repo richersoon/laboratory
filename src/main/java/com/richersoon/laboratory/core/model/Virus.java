@@ -4,6 +4,7 @@ import com.richersoon.laboratory.api.dto.VirusRequestDto;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,7 +14,10 @@ import java.util.UUID;
  */
 @Getter
 @EqualsAndHashCode(of = {"name"})
+@Entity(name = Virus.TABLE_NAME)
 public class Virus {
+
+    static final String TABLE_NAME = "viruses";
 
     @Id
     private String name;
