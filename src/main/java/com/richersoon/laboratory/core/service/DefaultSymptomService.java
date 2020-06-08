@@ -62,4 +62,12 @@ public class DefaultSymptomService implements SymptomService {
         PaginatedDto<SymptomDto> paginatedDto = new PaginatedDto<>(symptoms);
         return paginatedDto;
     }
+
+    @Override
+    public void delete(String id) {
+        Symptom symptom = symptomRepository.findById(id)
+                .orElseThrow(NotFoundException::new);
+
+        symptomRepository.deleteById(symptom.getId());
+    }
 }

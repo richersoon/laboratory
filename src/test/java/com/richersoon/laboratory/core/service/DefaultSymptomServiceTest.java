@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -142,6 +143,32 @@ public class DefaultSymptomServiceTest {
         assertEquals(NotFoundException.MESSAGE, actual.getMessage());
     }
 
+    @Test
+    public void deleteSuccessfully() {
+        Symptom mock = mock(Symptom.class);
+        String any = any();
+        when(symptomRepository.findById(any)).thenReturn(Optional.of(mock));
+        doNothing().when(symptomRepository).deleteById(any);
+
+        underTest.delete(any);
+        verify(symptomRepository, times(1)).findById(any);
+        verify(symptomRepository, times(1)).deleteById(any);
+    }
+
+    @Test
+    public void deleteShouldThrowNotFoundExceptionWhenNameNotFound() {
+        String any = any();
+
+        when(symptomRepository.findById(any)).thenReturn(Optional.empty());
+
+        NotFoundException actual = assertThrows(NotFoundException.class, () -> {
+            underTest.delete(any);
+        });
+        verify(symptomRepository, times(1)).findById(any);
+        verify(symptomRepository, times(0)).deleteById(any);
+        assertNotNull(actual);
+        assertEquals(NotFoundException.MESSAGE, actual.getMessage());
+    }
     @Test
     public void getSuccessfully() {
         Virus virus = commonTestVirus();

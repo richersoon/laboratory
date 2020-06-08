@@ -41,4 +41,10 @@ public interface SymptomService {
      * @return the symptoms
      */
     PaginatedDto<SymptomDto> getAll(String virusName);
+
+    /**
+     * Delete a symptom
+     * @param id the symptom id
+     */
+    void delete(String id);
 }
