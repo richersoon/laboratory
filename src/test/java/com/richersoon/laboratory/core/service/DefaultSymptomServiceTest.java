@@ -1,5 +1,6 @@
 package com.richersoon.laboratory.core.service;
 
+import com.richersoon.laboratory.api.dto.PaginatedDto;
 import com.richersoon.laboratory.api.dto.SymptomDto;
 import com.richersoon.laboratory.api.dto.SymptomRequestDto;
 import com.richersoon.laboratory.api.dto.VirusRequestDto;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -170,6 +173,28 @@ public class DefaultSymptomServiceTest {
 
         assertNotNull(actual);
         assertEquals(NotFoundException.MESSAGE, actual.getMessage());
+    }
+
+    @Test
+    public void getAllSuccessfully() {
+        Virus virus = commonTestVirus();
+        SymptomRequestDto setUpRequest = commonTestRequestSymptom();
+        Symptom expected = Symptom.create(virus, setUpRequest);
+
+        List<Symptom> expecteds = Arrays.asList(expected);
+
+        when(symptomRepository.findByVirusName(virus.getName())).thenReturn(expecteds);
+
+        PaginatedDto<SymptomDto> actuals = underTest.getAll(virus.getName());
+        verify(symptomRepository, times(1)).findByVirusName(virus.getName());
+
+        assertEquals(1, actuals.getItems().size());
+
+        SymptomDto actual = actuals.getItems().iterator().next();
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
+        assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt());
     }
 
     private SymptomRequestDto commonTestRequestSymptom() {

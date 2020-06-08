@@ -1,5 +1,6 @@
 package com.richersoon.laboratory.api.service;
 
+import com.richersoon.laboratory.api.dto.PaginatedDto;
 import com.richersoon.laboratory.api.dto.SymptomDto;
 import com.richersoon.laboratory.api.dto.SymptomRequestDto;
 import com.richersoon.laboratory.api.exception.AlreadyExistException;
@@ -33,4 +34,11 @@ public interface SymptomService {
      * @return the virus
      */
     SymptomDto get(String id);
+
+    /**
+     * Get symptoms by virus name
+     * @param virusName the virus name
+     * @return the symptoms
+     */
+    PaginatedDto<SymptomDto> getAll(String virusName);
 }
