@@ -39,6 +39,12 @@ public class VirusResource {
         return new ResponseEntity<>(virusService.create(requestDto), HttpStatus.CREATED);
     }
 
+    /**
+     * Update virus
+     * @param updateVirusRequestDto the update request
+     * @param name the name
+     * @return updated virus
+     */
     @PutMapping("/{name}")
     public VirusDto update(@RequestBody UpdateVirusRequestDto updateVirusRequestDto,
                            @PathVariable String name) {
