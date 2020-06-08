@@ -13,7 +13,7 @@ import java.util.UUID;
  * Domain object for symptom
  */
 @Getter
-@EqualsAndHashCode(of = {"description"})
+@EqualsAndHashCode(of = {"id"})
 @Entity(name = Symptom.TABLE_NAME)
 public class Symptom {
 
@@ -31,13 +31,24 @@ public class Symptom {
      * @param requestDto the create request
      * @return the new symptom
      */
-    public static Symptom create(SymptomRequestDto requestDto) {
+    public static Symptom create(final SymptomRequestDto requestDto) {
         Symptom virus = new Symptom();
         virus.id = UUID.randomUUID().toString();
         virus.description = requestDto.getDescription();
         virus.createdAt = LocalDateTime.now();
         virus.updatedAt = LocalDateTime.now();
         return virus;
+    }
+
+    /**
+     * Update
+     * @param requestDto the update request
+     * @return the updated symptom
+     */
+    public Symptom update(final SymptomRequestDto requestDto) {
+        this.description = requestDto.getDescription();
+        this.updatedAt = LocalDateTime.now();
+        return this;
     }
 
 }

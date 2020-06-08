@@ -18,6 +18,21 @@ public class SymptomTest {
         assertNotNull(actual.getUpdatedAt());
     }
 
+    @Test
+    public void updateSuccessfully() {
+        SymptomRequestDto setupRequest = commonTestRequestSymptom();
+        Symptom setUpVirus = Symptom.create(setupRequest);
+
+        SymptomRequestDto expected = SymptomRequestDto.builder()
+                .description("Mild Headache")
+                .build();
+        Symptom actual = setUpVirus.update(expected);
+
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertNotNull(actual.getCreatedAt());
+        assertNotNull(actual.getUpdatedAt());
+    }
+
     private SymptomRequestDto commonTestRequestSymptom() {
         return SymptomRequestDto.builder()
                 .description("Headache")
