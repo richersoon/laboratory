@@ -1,9 +1,10 @@
-package com.richersoon.laboratory.model;
+package com.richersoon.laboratory.core.model;
 
-import com.richersoon.laboratory.VirusRequestDto;
+import com.richersoon.laboratory.api.dto.VirusRequestDto;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class VirusTest {
 

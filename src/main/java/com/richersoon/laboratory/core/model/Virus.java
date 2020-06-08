@@ -1,6 +1,6 @@
-package com.richersoon.laboratory.model;
+package com.richersoon.laboratory.core.model;
 
-import com.richersoon.laboratory.VirusRequestDto;
+import com.richersoon.laboratory.api.dto.VirusRequestDto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

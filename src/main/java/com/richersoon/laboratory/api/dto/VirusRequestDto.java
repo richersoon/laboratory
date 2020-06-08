@@ -1,4 +1,4 @@
-package com.richersoon.laboratory;
+package com.richersoon.laboratory.api.dto;
 
 import lombok.Builder;
 import lombok.Getter;
