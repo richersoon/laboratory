@@ -4,6 +4,8 @@ import com.richersoon.laboratory.api.dto.PaginatedDto;
 import com.richersoon.laboratory.api.dto.VirusDto;
 import com.richersoon.laboratory.api.dto.VirusRequestDto;
 import com.richersoon.laboratory.api.service.VirusService;
+import com.richersoon.laboratory.integration.dto.CreateVirusRequestDto;
+import com.richersoon.laboratory.integration.dto.UpdateVirusRequestDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.richersoon.laboratory.integration.resource;
+package com.richersoon.laboratory.integration.dto;
 
 import lombok.Data;
 

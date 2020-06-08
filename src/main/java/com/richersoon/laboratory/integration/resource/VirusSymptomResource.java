@@ -4,6 +4,7 @@ import com.richersoon.laboratory.api.dto.PaginatedDto;
 import com.richersoon.laboratory.api.dto.SymptomDto;
 import com.richersoon.laboratory.api.dto.SymptomRequestDto;
 import com.richersoon.laboratory.api.service.SymptomService;
+import com.richersoon.laboratory.integration.dto.CreateSymptomRequestDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

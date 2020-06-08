@@ -3,6 +3,7 @@ package com.richersoon.laboratory.integration.resource;
 import com.richersoon.laboratory.api.dto.SymptomDto;
 import com.richersoon.laboratory.api.dto.SymptomRequestDto;
 import com.richersoon.laboratory.api.service.SymptomService;
+import com.richersoon.laboratory.integration.dto.UpdateSymptomRequestDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
