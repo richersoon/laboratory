@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 /**
  * Endpoint that expose viruses functionalities
  */
@@ -31,7 +33,7 @@ public class VirusResource {
      * @return created virus
      */
     @PostMapping
-    public ResponseEntity<VirusDto> create(@RequestBody CreateVirusRequestDto createRequestDto) {
+    public ResponseEntity<VirusDto> create(@Valid @RequestBody CreateVirusRequestDto createRequestDto) {
         VirusRequestDto requestDto = VirusRequestDto.builder()
                 .name(createRequestDto.getName())
                 .description(createRequestDto.getDescription())
