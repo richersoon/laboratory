@@ -26,4 +26,11 @@ public interface SymptomService {
      * @return the updated symptom
      */
     SymptomDto update(SymptomRequestDto requestDto);
+
+    /**
+     * Get symptom
+     * @param id the id
+     * @return the virus
+     */
+    SymptomDto get(String id);
 }

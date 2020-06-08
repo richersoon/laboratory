@@ -45,4 +45,11 @@ public class DefaultSymptomService implements SymptomService {
                 .map(symptom -> mapperFacade.map(symptom, SymptomDto.class))
                 .orElseThrow(NotFoundException::new);
     }
+
+    @Override
+    public SymptomDto get(String name) {
+        return symptomRepository.findById(name)
+                .map(symptom -> mapperFacade.map(symptom, SymptomDto.class))
+                .orElseThrow(NotFoundException::new);
+    }
 }

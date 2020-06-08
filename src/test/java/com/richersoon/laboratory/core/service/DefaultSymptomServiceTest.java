@@ -52,6 +52,7 @@ public class DefaultSymptomServiceTest {
         verify(symptomRepository, times(1)).findByDescription(expected.getDescription());
         verify(symptomRepository, times(1)).save(expected);
 
+        assertNotNull(actual.getId());
         assertEquals(expected.getDescription(), actual.getDescription());
         assertNotNull(actual.getCreatedAt());
         assertNotNull(actual.getUpdatedAt());
@@ -133,6 +134,39 @@ public class DefaultSymptomServiceTest {
 
         verify(symptomRepository, times(1)).findById(setUpRequest.getId());
         verify(symptomRepository, times(0)).save(any());
+
+        assertNotNull(actual);
+        assertEquals(NotFoundException.MESSAGE, actual.getMessage());
+    }
+
+    @Test
+    public void getSuccessfully() {
+        Virus virus = commonTestVirus();
+        SymptomRequestDto setUpRequest = commonTestRequestSymptom();
+        Symptom expected = Symptom.create(virus, setUpRequest);
+
+        when(symptomRepository.findById(expected.getId())).thenReturn(Optional.of(expected));
+
+        SymptomDto actual = underTest.get(expected.getId());
+        verify(symptomRepository, times(1)).findById(expected.getId());
+
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getDescription(), actual.getDescription());
+        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
+        assertEquals(expected.getUpdatedAt(), actual.getUpdatedAt());
+    }
+
+    @Test
+    public void getShouldThrowNotFoundWhenIdNotFound() {
+        SymptomRequestDto setUpRequest = commonTestRequestSymptom();
+
+        when(symptomRepository.findById(setUpRequest.getId())).thenReturn(Optional.empty());
+
+        NotFoundException actual = assertThrows(NotFoundException.class, () -> {
+            underTest.get(setUpRequest.getId());
+        });
+
+        verify(symptomRepository, times(1)).findById(setUpRequest.getId());
 
         assertNotNull(actual);
         assertEquals(NotFoundException.MESSAGE, actual.getMessage());
